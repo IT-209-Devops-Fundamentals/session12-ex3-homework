@@ -1,0 +1,44 @@
+name: CD Multi-Environment
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://api.staging.example.com
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Deploy application to Staging
+        run: |
+          echo "Deploying application to Staging environment..."
+          echo "Connecting to Staging cluster..."
+          echo "Applying Kubernetes manifests to staging namespace..."
+          echo "Deployment to Staging completed successfully!"
+
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://api.prod.example.com
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Deploy application to Production
+        run: |
+          echo "Deploying application to Production environment..."
+          echo "Connecting to Production cluster..."
+          echo "Applying Kubernetes manifests to production namespace..."
+          echo "Deployment to Production completed successfully!"
